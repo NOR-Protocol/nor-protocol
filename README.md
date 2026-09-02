@@ -43,5 +43,9 @@ The format takes syntax off the model. The content still has to be specific.
 
 ## License
 
-Non-commercial use with attribution (NOR & t8.pl). See `LICENSE`.  
+**Private / personal use: free.**  
+**Company / commercial use: not granted** — contact [t8.pl](https://t8.pl).
+
+Keep author credit (NOR & t8.pl). This is not MIT. GitHub will show **Other**. See `LICENSE`.
+
 X: [@NOR_Protocol](https://x.com/NOR_Protocol)
