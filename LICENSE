@@ -1,0 +1,13 @@
+NOR Protocol v4
+Autorzy: NOR & t8.pl
+
+Dozwolony użytek niekomercyjny z zachowaniem informacji o autorach.
+
+To nie jest licencja MIT / Apache. Kod w tym repozytorium (kreator, parser, skille)
+wolno używać, kopiować i dostosowywać do własnych, niekomercyjnych celów,
+pod warunkiem zachowania informacji o autorach.
+
+Użytek komercyjny — kontakt: https://t8.pl
+
+Format komunikacji (składnia linii v4) jest opisany publicznie na https://jezyk.t8.pl
+i wolno go stosować we własnych systemach.
