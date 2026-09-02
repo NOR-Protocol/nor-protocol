@@ -1,13 +1,40 @@
-NOR Protocol v4
+NOR Protocol v4 — licencja
 Autorzy: NOR & t8.pl
+https://jezyk.t8.pl
 
-Dozwolony użytek niekomercyjny z zachowaniem informacji o autorach.
+PL
+----
+Darmowe jest wyłącznie użycie prywatne / osobiste / niekomercyjne
+(własny komputer, własny zespół bez sprzedaży tego jako produktu
+ani bez użycia w działalności firmy nastawionej na zysk).
 
-To nie jest licencja MIT / Apache. Kod w tym repozytorium (kreator, parser, skille)
-wolno używać, kopiować i dostosowywać do własnych, niekomercyjnych celów,
-pod warunkiem zachowania informacji o autorach.
+Nie wolno bez osobnej zgody:
+- używać w firmie, u klienta, w produkcie, w usłudze płatnej
+- sublicencjonować, odsprzedawać, pakować w ofertę komercyjną
+- twierdzić, że to standard branżowy albo że autorzy to wspierają komercyjnie
 
-Użytek komercyjny — kontakt: https://t8.pl
+Użycie komercyjne / firmowe = kontakt: https://t8.pl
 
-Format komunikacji (składnia linii v4) jest opisany publicznie na https://jezyk.t8.pl
-i wolno go stosować we własnych systemach.
+Zachować informację o autorach (NOR & t8.pl) przy kopii i modyfikacji
+na użytek prywatny.
+
+To nie jest MIT, Apache, GPL ani Creative Commons.
+GitHub pokaże licencję jako „Other” — tak ma być.
+
+EN
+----
+Free only for private / personal / non-commercial use
+(your own machine, your own unpaid tinkering — not a company,
+not a client project, not a paid product or service).
+
+Not allowed without a separate grant:
+- use by a company, for a customer, in a product, in a paid service
+- sublicense, resell, or wrap this into a commercial offering
+- claim this is an industry standard or commercially supported by the authors
+
+Commercial / company use = contact https://t8.pl
+
+Keep author credit (NOR & t8.pl) on private copies and modifications.
+
+This is not MIT, Apache, GPL, or Creative Commons.
+GitHub will show the license as “Other”. That is intended.
