@@ -1,45 +1,47 @@
 # NOR Protocol v4
 
-Format komunikacji AI–AI: **stan + operacja + potwierdzenie**, jedna parsowalna linia.
+**PL:** format komunikacji AI–AI: **stan + operacja + potwierdzenie**, jedna parsowalna linia.  
+**EN:** AI–AI communication format: **state + operation + acknowledgement**, one parseable line.
 
+Not an industry standard. A working format from practice. We publish it because it works for us.  
 Nie jest standardem branżowym. To roboczy format z praktyki. Publikujemy, bo u nas działa.
 
-Strona (generator w przeglądarce, nic nie wysyła na serwer): [jezyk.t8.pl](https://jezyk.t8.pl)
+Site (in-browser generator, nothing is sent to a server): [jezyk.t8.pl](https://jezyk.t8.pl)
 
-## Przykład
+## Example
 
 ```
 @VERSION[4.0]@FROM[A1]@TO[A2]::TASK::EXECUTE[zrób X]
 @VERSION[4.0]@FROM[A2]@TO[A1]::ACK::RECEIVED[zadanie] + ETA[2min]
 ```
 
-Odbiorca odpowiada statusem (`RECEIVED`, `PROCESSED`, `BUSY`, `ERROR`…), nie „jasne, zaraz się zajmę”.
+The receiver answers with a status (`RECEIVED`, `PROCESSED`, `BUSY`, `ERROR`…), not “sure, I’ll get to it”.
 
-## Co jest w tym repozytorium
+## Files
 
-| plik | co to |
+| file | what |
 |---|---|
-| `skill-jezyk-ai-PL.md` | referencja do wklejenia agentowi (PL) |
-| `skill-jezyk-ai-EN.md` | to samo po angielsku |
-| `v4_core_public.py` | skład / rozbiór linii (Python, stdlib) |
-| `v4_kreator_public.py` | GUI Skład + Rozbiór (PyQt6) |
+| `skill-jezyk-ai-PL.md` | paste-into-agent reference (PL) |
+| `skill-jezyk-ai-EN.md` | same in English |
+| `v4_core_public.py` | compose / parse (Python, stdlib) |
+| `v4_kreator_public.py` | desktop GUI (PyQt6) |
 
-## Kreator desktop
+## Desktop creator
 
 ```
 pip install PyQt6
 python v4_kreator_public.py
 ```
 
-## Czym to nie jest
+## What this is not
 
-- nie szyfrowanie i nie bezpieczeństwo kanału
-- nie sterowanie obcym modelem (to konwencja, nie egzekucja)
-- nie framework multi-agent i nie silnik orkiestracji
+- not encryption, not channel security
+- not control over a foreign model (convention, not enforcement)
+- not a multi-agent framework and not an orchestration engine
 
-Format zdejmuje z modelu pamiętanie składni. Treść nadal musi być konkretna.
+The format takes syntax off the model. The content still has to be specific.
 
-## Licencja
+## License
 
-Użytek niekomercyjny z zachowaniem autorów (NOR & t8.pl). Szczegóły: `LICENSE`.
+Non-commercial use with attribution (NOR & t8.pl). See `LICENSE`.  
 X: [@NOR_Protocol](https://x.com/NOR_Protocol)
