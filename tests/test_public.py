@@ -57,6 +57,33 @@ class PublicSyntaxTests(unittest.TestCase):
                     count += 1
         self.assertGreaterEqual(count, 10)
 
+    def test_compose_normalizes_command_case(self):
+        # regresja bug5: komenda lowercase normalizowana jak namespace
+        self.assertEqual(
+            v4.compose("TASK", "execute", "x"),
+            v4.compose("TASK", "EXECUTE", "x"),
+        )
+
+    def test_compose_rejects_double_payload(self):
+        # regresja bug6: payload przy komendzie z [payload] = jawny blad, nie cichy drop
+        with self.assertRaises(v4.V4Error):
+            v4.compose("DEK", "STAGE[INIT]", "tresc")
+        # bez dodatkowego payloadu STAGE[INIT] dalej dziala
+        self.assertTrue(v4.parse(v4.compose("DEK", "STAGE[INIT]"))["valid"])
+
+    def test_parse_errors_single_language(self):
+        # regresja bug4: publiczny parse nie miesza PL do EN — I DALEJ odrzuca niepoprawna linie
+        result = v4.parse("@VERSION[4.0]::ZZZ::execute[x]")
+        self.assertFalse(result["valid"], result)  # walidacja nie zniknela wraz z jezykiem
+        bledy = " ".join(result["bledy"]).lower()
+        for pl in ("nieznany", "brak", "pusta", "niepoprawn", "linia"):
+            self.assertNotIn(pl, bledy, bledy)
+
+    def test_command_with_digits_normalized(self):
+        # uwaga#2 Codera: komenda z cyfra tez normalizowana (parser dopuszcza [A-Z][A-Z0-9_]*)
+        self.assertEqual(v4.compose("DATA", "custom_2", "x"),
+                         v4.compose("DATA", "CUSTOM_2", "x"))
+
 
 if __name__ == "__main__":
     unittest.main()

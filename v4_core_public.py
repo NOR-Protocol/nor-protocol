@@ -72,6 +72,10 @@ def compose(namespace: str, command: str, payload: str = "", *,
     """Zloz poprawna linie v4 z opcji. Rzuca V4Error przy braku wymaganych pol."""
     namespace = (namespace or "").strip().upper().rstrip(":")
     command = (command or "").strip()
+    # normalizuj komende do wielkich liter (jak namespace); zachowaj ewentualny [payload] w komendzie
+    _cm = re.match(r"^([A-Za-z_][A-Za-z0-9_]*)(\[.*\])?$", command)
+    if _cm:
+        command = _cm.group(1).upper() + (_cm.group(2) or "")
     if not namespace:
         raise V4Error("brak NAMESPACE (wymagany)")
     if namespace not in NAMESPACE:
@@ -100,10 +104,15 @@ def compose(namespace: str, command: str, payload: str = "", *,
     if cond_if.strip():
         mods.append(f"@IF[{cond_if.strip()}]")
 
-    # command moze juz zawierac [payload] (np. STAGE[INIT]); jak nie i payload podany — doklej
-    body = command
-    if payload.strip() and not (command.endswith("]") and "[" in command):
+    # command moze juz zawierac [payload] (np. STAGE[INIT])
+    _has_bracket = command.endswith("]") and "[" in command
+    if payload.strip():
+        if _has_bracket:
+            raise V4Error(f"komenda '{command}' juz niesie [payload] — nie dopisuj drugiego "
+                          f"(podano payload='{payload.strip()}')")
         body = f"{command}[{payload.strip()}]"
+    else:
+        body = command
 
     line = "".join(mods) + f"::{namespace}::{body}"
     result = parse(line)
@@ -172,7 +181,7 @@ def parse(line: str) -> dict:
     """Validate the public message syntax, not its truth or execution."""
     raw = line or ""
     out = _parse_fields(raw)
-    errors = out["bledy"]
+    errors = []  # publiczny parse mowi po angielsku; PL zostaje w _parse_fields dla parse_human (jedna warstwa = jeden jezyk)
     if "\n" in raw or "\r" in raw:
         errors.append("one message per line")
     if not raw.startswith("@VERSION[4.0]"):
@@ -221,17 +230,20 @@ def parse(line: str) -> dict:
         if depth != 0:
             errors.append("unbalanced payload brackets or trailing command")
         out["command"], out["payload"] = command, payload
+    out["bledy"] = errors
     out["valid"] = not errors
     return out
 
 
 def parse_human(line: str) -> str:
     """Rozbior w formie czytelnego opisu po polsku."""
-    p = parse(line)
-    if p["bledy"] and not p["namespace"]:
-        return "❌ " + "; ".join(p["bledy"])
+    p = parse(line)                      # scisla walidacja + pola (bledy EN)
+    pf = _parse_fields(line)             # komunikaty PL do widoku ludzkiego
+    bledy_pl = pf["bledy"] or p["bledy"]  # fallback gdy warstwa scisla zlapala wiecej niz _parse_fields
+    if bledy_pl and not p["namespace"]:
+        return "❌ " + "; ".join(bledy_pl)
     L = []
-    L.append("✅ Poprawna linia v4" if p["valid"] else "⚠ Linia z uwagami: " + "; ".join(p["bledy"]))
+    L.append("✅ Poprawna linia v4" if p["valid"] else "⚠ Linia z uwagami: " + "; ".join(bledy_pl))
     m = p["modyfikatory"]
     if "FROM" in m:      L.append(f"• Od: {m['FROM']}")
     if "BROADCAST" in m: L.append("• Do: WSZYSTKICH (broadcast)")
