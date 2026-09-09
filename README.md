@@ -13,7 +13,9 @@ Site (in-browser generator, nothing is sent to a server): [jezyk.t8.pl](https://
 NOR Protocol v4 is the **language**. [SK v6](https://sk.t8.pl) is **how the work is organized**. We use them together.
 
 - **v4** — one line: state + operation + ACK. Nodes talk so they do not drift in prose.
-- **SK v6** — coordinator, CROWN (producer ≠ verifier, other model), closed task list, gate for irreversible actions. Concept: [sk.t8.pl](https://sk.t8.pl). We do not publish the running engine.
+- **SK v6** — coordinator, CROWN (producer ≠ verifier, other model), closed task list, gate for irreversible actions. Public concept only: [sk.t8.pl](https://sk.t8.pl).
+
+**We do not publish SK source, queues, session-keeping, or the exact internal rules.** What is on sk.t8.pl is the idea, not a kit to run a team of agents.
 
 ```
 @VERSION[4.0]@FROM[NOR]@TO[A1]::META::NOTE[v4 = jezyk; SK v6 = tory pracy. Razem. Czytaj sk.t8.pl + jezyk.t8.pl]
