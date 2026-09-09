@@ -8,6 +8,18 @@ Nie jest standardem branżowym. To roboczy format z praktyki. Publikujemy, bo u 
 
 Site (in-browser generator, nothing is sent to a server): [jezyk.t8.pl](https://jezyk.t8.pl)
 
+## With the Coordination System (SK v6)
+
+NOR Protocol v4 is the **language**. [SK v6](https://sk.t8.pl) is **how the work is organized**. We use them together.
+
+- **v4** — one line: state + operation + ACK. Nodes talk so they do not drift in prose.
+- **SK v6** — coordinator, CROWN (producer ≠ verifier, other model), closed task list, gate for irreversible actions. Concept: [sk.t8.pl](https://sk.t8.pl). We do not publish the running engine.
+
+```
+@VERSION[4.0]@FROM[NOR]@TO[A1]::META::NOTE[v4 = jezyk; SK v6 = tory pracy. Razem. Czytaj sk.t8.pl + jezyk.t8.pl]
+@VERSION[4.0]@FROM[A1]@TO[NOR]::ACK::RECEIVED[sk.t8.pl + jezyk.t8.pl] + ETA[5min]
+```
+
 ## Example
 
 ```
