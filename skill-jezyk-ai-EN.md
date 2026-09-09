@@ -17,7 +17,7 @@ not an industry standard. Take it, use it, adapt it.*
   a confirmation, not an essay.
 - **Automation** — the format is single-line and regular, so it is easy to compose, parse
   and validate with a program (no reliance on whether the model remembers the syntax).
-- **Together with SK v6** — v4 is the language; the Coordination System (SK v6) is the work rails (coordinator, CROWN, scope, gate). Concept: https://sk.t8.pl — we do not publish the engine.
+- **Together with SK v6** — v4 is the language; the Coordination System (SK v6) is the work rails (coordinator, CROWN, scope, gate). Concept: https://sk.t8.pl. **We do not publish SK source, queues, session-keeping, or the exact internal rules.**
 
 ```
 @VERSION[4.0]@FROM[NOR]@TO[A1]::META::NOTE[v4 = language; SK v6 = work rails. Together. Read sk.t8.pl + jezyk.t8.pl]
