@@ -3,7 +3,7 @@
 # Autor: MafiaAI — zespol ludzi i agentow AI. Wiecej: https://t8.pl
 #
 # Sens: jezyk v4 przestaje zalezec od tego czy MODEL pamieta skladnie — narzedzie
-# sklada i rozbiera mechanicznie, zero driftu/halucynacji.
+# sklada i rozbiera skladnie; nie sprawdza prawdziwosci tresci.
 #
 # Struktura: @VERSION[4.0][MODYFIKATORY]::NAMESPACE::COMMAND[PAYLOAD]
 
@@ -106,15 +106,17 @@ def compose(namespace: str, command: str, payload: str = "", *,
         body = f"{command}[{payload.strip()}]"
 
     line = "".join(mods) + f"::{namespace}::{body}"
-    # format jest jednoliniowy — zlamania wiersza zamieniamy na spacje
-    return " ".join(line.split("\n")).strip()
+    result = parse(line)
+    if not result["valid"]:
+        raise V4Error("; ".join(result["bledy"]))
+    return line
 
 
 # ── ROZBIÓR: linia v4 -> struktura + ludzki opis ──
 
 _MOD_RE = re.compile(r"@([A-Z_]+)(?:\[([^\]]*)\])?")
 
-def parse(line: str) -> dict:
+def _parse_fields(line: str) -> dict:
     """Rozbierz linie v4 na pola. Zwraca dict; klucz 'bledy' = lista problemow (moze byc pusta)."""
     line = (line or "").strip()
     out = {"raw": line, "bledy": [], "modyfikatory": {}, "namespace": "", "command": "",
@@ -163,6 +165,63 @@ def parse(line: str) -> dict:
         out["payload"] = ""
 
     out["valid"] = not out["bledy"]
+    return out
+
+
+def parse(line: str) -> dict:
+    """Validate the public message syntax, not its truth or execution."""
+    raw = line or ""
+    out = _parse_fields(raw)
+    errors = out["bledy"]
+    if "\n" in raw or "\r" in raw:
+        errors.append("one message per line")
+    if not raw.startswith("@VERSION[4.0]"):
+        errors.append("VERSION must be first")
+    head, separator, tail = raw.partition("::")
+    tokens = list(_MOD_RE.finditer(head))
+    if "".join(m.group(0) for m in tokens) != head:
+        errors.append("invalid modifier syntax")
+    names = [m.group(1) for m in tokens]
+    if len(names) != len(set(names)):
+        errors.append("duplicate modifier")
+    valued = {"VERSION", "FROM", "TO", "PRIORITY", "SEQ", "DEPENDS", "IF"}
+    flags = {"BROADCAST", "PARALLEL"}
+    for token in tokens:
+        name, value = token.group(1, 2)
+        if name not in valued | flags:
+            errors.append("unknown modifier: " + name)
+        elif name in valued and (not value or not value.strip() or "[" in value):
+            errors.append("invalid modifier value: " + name)
+        elif name in flags and value is not None:
+            errors.append("flag does not take a value: " + name)
+    mods = out["modyfikatory"]
+    if "TO" in mods and "BROADCAST" in mods:
+        errors.append("TO and BROADCAST are mutually exclusive")
+    if "PRIORITY" in mods and mods["PRIORITY"] not in PRIORITY[1:]:
+        errors.append("invalid priority")
+    for name in ("SEQ", "DEPENDS"):
+        if name in mods and not re.fullmatch(r"[0-9]+", str(mods[name])):
+            errors.append("numeric modifier required: " + name)
+    ns, ns_separator, body = tail.partition("::")
+    if not separator or not ns_separator or ns not in NAMESPACE:
+        errors.append("invalid public namespace")
+    match = re.fullmatch(r"([A-Z][A-Z0-9_]{0,31})(?:\[(.*)\])?", body)
+    if not match:
+        errors.append("invalid command or payload")
+    else:
+        command, payload = match.group(1), match.group(2) or ""
+        depth = 0
+        for char in payload:
+            if char == "[":
+                depth += 1
+            elif char == "]":
+                depth -= 1
+            if depth < 0:
+                break
+        if depth != 0:
+            errors.append("unbalanced payload brackets or trailing command")
+        out["command"], out["payload"] = command, payload
+    out["valid"] = not errors
     return out
 
 

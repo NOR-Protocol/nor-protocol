@@ -2,26 +2,20 @@
 name: jezyk-ai-v4
 description: Język AI (NOR Protocol v4) — format stanowej komunikacji AI-AI. Użyj gdy jeden agent pisze do drugiego stanowo (raport→decyzja→wykonanie→ACK), albo gdy potrzebna dyscyplina — uziemienie modelu, który pływa lub halucynuje w prozie. Składnia + namespace + przykłady.
 autor: MafiaAI — zespół ludzi i agentów AI budujący narzędzia, strony i rozwiązania. Więcej: https://t8.pl
-licencja: do użytku publicznego
+licencja: Patrz LICENSE; bez osobnej zgody tylko uzytek prywatny/osobisty
 ---
 
 # Język AI (NOR Protocol v4) — format komunikacji AI-AI
 
 *Zwięzła referencja robocza. To jest NASZ format, wypracowany w praktyce między agentami —
-nie standard branżowy. Bierz, używaj, dostosuj.*
+nie standard branżowy. Zasady uzycia okresla LICENSE.*
 
 ## PO CO (kiedy używać)
 - **Komunikacja stanowa** agent↔agent: raport→decyzja→wykonanie→ACK (nie proza).
-- **Dyscyplina** — uziemienie modelu, który pływa lub kombinuje w prozie. Sprawdzone w praktyce:
-  stan+operacja+ACK nie zostawia miejsca na konfabulację. Model musi podać fakt i potwierdzenie,
-  nie esej.
+- **Czytelnosc** — jawne pola ograniczaja niejednoznacznosc. Poprawna skladnia nie dowodzi prawdy ani wykonania.
 - **Automaty** — format jest jednoliniowy i regularny, więc łatwo go składać, parsować
   i walidować programem (bez polegania na tym, czy model pamięta składnię).
-- **Razem z SK v6** — v4 to język; System Koordynacji (SK v6) to tory pracy (koordynator, CROWN, zakres, bramka). Koncepcja: https://sk.t8.pl. **Nie publikujemy kodu SK, kolejek, trzymania sesji ani dokładnych reguł wewnętrznych.**
-
-```
-@VERSION[4.0]@FROM[NOR]@TO[A1]::META::NOTE[v4 = jezyk; SK v6 = tory pracy. Razem. Czytaj sk.t8.pl + jezyk.t8.pl]
-```
+- **Zakres** — tylko publiczne narzedzia jezyka. SK to osobny prywatny projekt; jego implementacji tu nie ma.
 
 ## SKŁADNIA
 ```
@@ -46,31 +40,30 @@ nie standard branżowy. Bierz, używaj, dostosuj.*
 ## PRZYKŁADY
 ```
 # ACK stanowy (odpowiedź na polecenie):
-@VERSION[4.0]@FROM[AI1]@TO[NOR]::ACK::RECEIVED[zadanie X] + ETA[2min]
+@VERSION[4.0]@FROM[AI1]@TO[NOR]::ACK::RECEIVED[task=example; eta=2min]
 
 # Uziemienie pływającego modelu (fakty+komendy, nie proza):
 @VERSION[4.0]@TO[AI2]::META::CORRECT[X = fakt, nie Y]
-@VERSION[4.0]::CMD::STOP[re-post/zawyżanie] + CMD::NEXT[konkret]
+@VERSION[4.0]::CMD::STOP[re-post/zawyżanie]
+@VERSION[4.0]::CMD::NEXT[konkret]
 @VERSION[4.0]::ACK::AWAIT[STATUS=RECEIVED + ETA]
 
 # Handshake agent-agent:
-@VERSION[4.0]@TO[AI2]::SIG::IDENT[AI1] → @VERSION[4.0]::ACK::OK[gotów]
+@VERSION[4.0]@TO[AI2]::SIG::IDENT[AI1]
+@VERSION[4.0]::ACK::OK[gotów]
 
 # Zadanie z priorytetem i sekwencją:
-@VERSION[4.0]@SEQ[001]@PRIORITY[HIGH]::TASK::EXECUTE[job] TTL::300
+@VERSION[4.0]@SEQ[001]@PRIORITY[HIGH]::TASK::EXECUTE[task=example; ttl_seconds=300]
 ```
 
 ## ZASADY
-1. **Stan, nie proza.** Każda linia = STAN+OPERACJA+ACK. Model, który pływa lub halucynuje,
-   kręci w prozie — v4 go uziemia (musi podać fakt+potwierdzenie).
-2. **ACK obowiązkowy** — odbiorca odpowiada stanowo (RECEIVED+ETA), nie esejem.
-3. **Jednoliniowo** — jedna wiadomość = jedna linia; wieloliniowość zostaw kanałom, które ją znoszą.
-4. **Granica:** v4 działa między agentami, które WSPÓŁPRACUJĄ. Nad agentem zewnętrznym,
-   na którego nie masz wpływu, protokół to perswazja, nie kontrola — nie oczekuj egzekucji.
+1. Jeden komunikat na linie. VERSION pierwszy. Tylko opisane modyfikatory i namespace core.
+2. Potwierdzaj zadania wymagajace odbioru. Nie odpowiadaj ACK na ACK ani FYI bez wyraznej prosby.
+3. Odbior nie oznacza wykonania. Etykieta statusu nie dowodzi prawdziwosci tresci.
+4. FROM i TO to etykiety, nie uwierzytelnienie ani kontrola dostepu.
+5. Nazwy komend sa rozszerzalne (1-32 wielkie litery, cyfry lub podkreslenia; poczatek od litery).
+6. Parser sprawdza tylko skladnie. Nie wykonuje komend, nie egzekwuje TTL, nie uwierzytelnia agentow i nie weryfikuje wynikow.
+7. ETA i inne dane aplikacyjne umieszczaj w payloadzie. Nie dopisuj drugiej komendy za nim.
+8. Nawiasy kwadratowe w payloadzie musza byc zbilansowane; zamiast sklejania komend wysylaj osobne komunikaty.
 
----
-*v4 = dyscyplina trzymająca model przy faktach. Format nie zastępuje myślenia —
-zdejmuje z modelu pamiętanie składni i zostawia mu treść.*
-
----
-**MafiaAI** — zespół ludzi i agentów AI budujący narzędzia, strony i rozwiązania. Więcej: **https://t8.pl**
+Wiecej: https://t8.pl. Zasady uzycia okresla LICENSE.

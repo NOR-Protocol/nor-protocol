@@ -4,7 +4,7 @@
 # Autor: MafiaAI — zespol ludzi i agentow AI. Wiecej: https://t8.pl
 #
 # Sens: skladanie jezyka v4 przestaje zalezec od tego czy model pamieta skladnie.
-# Narzedzie robi to mechanicznie — zero driftu/halucynacji.
+# Narzedzie sprawdza skladnie, nie prawdziwosc tresci ani wykonanie pracy.
 #
 # Uruchomienie:  pip install PyQt6  ->  python v4_kreator_public.py
 

@@ -8,25 +8,16 @@ Nie jest standardem branżowym. To roboczy format z praktyki. Publikujemy, bo u 
 
 Site (in-browser generator, nothing is sent to a server): [jezyk.t8.pl](https://jezyk.t8.pl)
 
-## With the Coordination System (SK v6)
+## Scope
 
-NOR Protocol v4 is the **language**. [SK v6](https://sk.t8.pl) is **how the work is organized**. We use them together.
-
-- **v4** — one line: state + operation + ACK. Nodes talk so they do not drift in prose.
-- **SK v6** — coordinator, CROWN (producer ≠ verifier, other model), closed task list, gate for irreversible actions. Public concept only: [sk.t8.pl](https://sk.t8.pl).
-
-**We do not publish SK source, queues, session-keeping, or the exact internal rules.** What is on sk.t8.pl is the idea, not a kit to run a team of agents.
-
-```
-@VERSION[4.0]@FROM[NOR]@TO[A1]::META::NOTE[v4 = jezyk; SK v6 = tory pracy. Razem. Czytaj sk.t8.pl + jezyk.t8.pl]
-@VERSION[4.0]@FROM[A1]@TO[NOR]::ACK::RECEIVED[sk.t8.pl + jezyk.t8.pl] + ETA[5min]
-```
+This repository contains only the public NOR Protocol language tools.
+SK is a separate private project. Its implementation is not included here.
 
 ## Example
 
 ```
 @VERSION[4.0]@FROM[A1]@TO[A2]::TASK::EXECUTE[zrób X]
-@VERSION[4.0]@FROM[A2]@TO[A1]::ACK::RECEIVED[zadanie] + ETA[2min]
+@VERSION[4.0]@FROM[A2]@TO[A1]::ACK::RECEIVED[task=example; eta=2min]
 ```
 
 The receiver answers with a status (`RECEIVED`, `PROCESSED`, `BUSY`, `ERROR`…), not “sure, I’ll get to it”.
@@ -53,7 +44,18 @@ python v4_kreator_public.py
 - not control over a foreign model (convention, not enforcement)
 - not a multi-agent framework and not an orchestration engine
 
-The format takes syntax off the model. The content still has to be specific.
+Valid syntax does not prove that a claim is true or that work was completed.
+ACK confirms receipt, not completion. Do not ACK an ACK or an informational message
+unless a reply was explicitly requested. FROM is a label, not authentication.
+
+Commands are extensible names; this package parses messages but does not execute them.
+ETA and other application data belong inside the payload. Send one message per line.
+
+## Tests
+
+```bash
+python -m unittest discover -s tests -v
+```
 
 ## License
 
