@@ -17,6 +17,11 @@ nie standard branżowy. Bierz, używaj, dostosuj.*
   nie esej.
 - **Automaty** — format jest jednoliniowy i regularny, więc łatwo go składać, parsować
   i walidować programem (bez polegania na tym, czy model pamięta składnię).
+- **Razem z SK v6** — v4 to język; System Koordynacji (SK v6) to tory pracy (koordynator, CROWN, zakres, bramka). Opis koncepcji: https://sk.t8.pl — bez publikacji silnika.
+
+```
+@VERSION[4.0]@FROM[NOR]@TO[A1]::META::NOTE[v4 = jezyk; SK v6 = tory pracy. Razem. Czytaj sk.t8.pl + jezyk.t8.pl]
+```
 
 ## SKŁADNIA
 ```
