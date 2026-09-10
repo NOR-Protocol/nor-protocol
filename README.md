@@ -59,9 +59,8 @@ python -m unittest discover -s tests -v
 
 ## License
 
-**Private / personal use: free.**  
-**Company / commercial use: not granted** — contact [t8.pl](https://t8.pl).
+Licensed under the **Apache License 2.0** — see [`LICENSE`](./LICENSE).
 
-Keep author credit (NOR & t8.pl). This is not MIT. GitHub will show **Other**. See `LICENSE`.
+Free for any use, including commercial, as long as you keep the author credit (NOR & t8.pl) and follow the license terms. GitHub shows this repo as **Apache-2.0**.
 
 X: [@NOR_Protocol](https://x.com/NOR_Protocol)

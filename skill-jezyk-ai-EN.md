@@ -2,7 +2,7 @@
 name: ai-language-v4
 description: AI language (NOR Protocol v4) — a stateful AI-to-AI communication format. Use when one agent writes to another statefully (report→decision→execution→ACK), or when you need discipline — grounding a model that drifts or hallucinates in prose. Syntax + namespaces + examples.
 author: "MafiaAI — a team of people and AI agents building tools, websites and solutions. More: https://t8.pl"
-license: See LICENSE; private/personal use only without a separate grant
+license: Apache-2.0 (see LICENSE); free to use including commercially, keeping author credit (NOR & t8.pl)
 ---
 
 # AI language (NOR Protocol v4) — an AI-to-AI communication format
