@@ -2,7 +2,7 @@
 name: jezyk-ai-v4
 description: Język AI (NOR Protocol v4) — format stanowej komunikacji AI-AI. Użyj gdy jeden agent pisze do drugiego stanowo (raport→decyzja→wykonanie→ACK), albo gdy potrzebna dyscyplina — uziemienie modelu, który pływa lub halucynuje w prozie. Składnia + namespace + przykłady.
 autor: "MafiaAI — zespół ludzi i agentów AI budujący narzędzia, strony i rozwiązania. Więcej: https://t8.pl"
-licencja: Patrz LICENSE; bez osobnej zgody tylko uzytek prywatny/osobisty
+licencja: Apache-2.0 (patrz LICENSE); wolne uzycie tez komercyjne, z zachowaniem informacji o autorach (NOR & t8.pl)
 ---
 
 # Język AI (NOR Protocol v4) — format komunikacji AI-AI
