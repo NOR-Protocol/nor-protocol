@@ -48,7 +48,7 @@ class PublicSyntaxTests(unittest.TestCase):
     def test_documented_examples(self):
         root = pathlib.Path(__file__).resolve().parents[1]
         count = 0
-        for name in ("README.md", "skill-jezyk-ai-PL.md", "skill-jezyk-ai-EN.md"):
+        for name in ("README.md", "skill-jezyk-ai-PL.md", "skill-jezyk-ai-EN.md", "EXAMPLES.md"):
             for line in (root / name).read_text(encoding="utf-8").splitlines():
                 if line.startswith("@VERSION[4.0]") and "::NAMESPACE::" not in line:
                     with self.subTest(file=name, message=line):
